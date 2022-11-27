@@ -1,5 +1,6 @@
 using System.IO;
 using System.Linq;
+using System.Text;
 using UnityEditor;
 using UnityEditor.Localization;
 using UnityEngine;
@@ -23,8 +24,7 @@ public class StringTableCollectionCsvExporterWindow : EditorWindow
         EditorGUILayout.LabelField("OutputFolder", _outputPath);
         if (GUILayout.Button("Select Output Folder"))
         {
-            var selectedPathName =
-                EditorUtility.OpenFolderPanel(title: "Select Output Folder", folder: "", defaultName: "");
+            var selectedPathName = EditorUtility.OpenFolderPanel( "Select Output Folder",  "",  "");
             if (!string.IsNullOrEmpty(selectedPathName)) _outputPath = selectedPathName;
         }
 
@@ -36,7 +36,7 @@ public class StringTableCollectionCsvExporterWindow : EditorWindow
 
             foreach (var stringTableCollection in stringTableCollections)
             {
-                using var textWriter = new StreamWriter($"{_outputPath}/{stringTableCollection.name}.csv");
+                using var textWriter = new StreamWriter($"{_outputPath}/{stringTableCollection.name}.csv", false, Encoding.UTF8);
                 Csv.Export(textWriter, stringTableCollection);
             }
 
